@@ -17,8 +17,7 @@ var (
 )
 
 func (r *Range) OwnsKey(key string) bool {
-	return key >= r.Low &&
-		(key < r.High)
+	return key >= r.Low && key < r.High
 }
 
 func (r *Range) Get(key string) *string {
