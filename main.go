@@ -20,12 +20,6 @@ func main() {
 	// Debug it
 	fmt.Printf("Current DB:\n%s\n", db.DebugRanges())
 
-	// Current DB:
-	// 	Range:
-	// 	Low: ''
-	// 	High: 'Inf'
-	// 	Size: 500
-
 	// Now, let's insert again to exceed the range
 	for i := 501; i <= 700; i++ {
 		v := fmt.Sprintf("%05d", i)
@@ -36,17 +30,6 @@ func main() {
 	// Debug it
 	fmt.Printf("Current DB:\n%s\n", db.DebugRanges())
 
-	// Current DB:
-	// 	Range:
-	// 	Low: '00300'
-	// 	High: 'Inf'
-	// 	Size: 400
-
-	// 	Range:
-	// 	Low: ''
-	// 	High: '00300'
-	// 	Size: 300
-
 	// Insert a ton to cause lots of range splits all over
 	for i := 700; i < 2000; i++ {
 		v := fmt.Sprintf("%05d", i)
@@ -56,39 +39,15 @@ func main() {
 	// Debug it
 	fmt.Printf("Current DB:\n%s\n", db.DebugRanges())
 
-	// Current DB:
-	// 	Range:
-	// 	Low: '01500'
-	// 	High: 'Inf'
-	// 	Size: 499
-
-	// 	Range:
-	// 	Low: ''
-	// 	High: '00300'
-	// 	Size: 300
-
-	// 	Range:
-	// 	Low: '00300'
-	// 	High: '00600'
-	// 	Size: 300
-
-	// 	Range:
-	// 	Low: '00600'
-	// 	High: '00900'
-	// 	Size: 300
-
-	// 	Range:
-	// 	Low: '00900'
-	// 	High: '01200'
-	// 	Size: 300
-
-	// 	Range:
-	// 	Low: '01200'
-	// 	High: '01500'
-	// 	Size: 300
-
 	// Get some data just in case
 	fmt.Println(*db.Get("01000"))
-	// Getting key 01000 from range with low 00900
-	// 01000
+
+	// Let's make a crazy one
+	mangleDB := database.NewDB(10_000) // o7 godspeed memory
+	for i := 0; i < 50_000; i++ {
+		mangleDB.Set(fmt.Sprintf("%d", i), "e")
+	}
+	fmt.Println(mangleDB.DebugRanges())
+	fmt.Println(*mangleDB.Get("42000"))
+	fmt.Println(*mangleDB.Get("20000"))
 }
